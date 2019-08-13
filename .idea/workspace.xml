@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c608523f-7063-44db-a3e9-3c57dd688eb3" name="Default" comment="" />
+    <list default="true" id="c608523f-7063-44db-a3e9-3c57dd688eb3" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/luffy_stark/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/luffy_stark/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/luffy_stark/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/luffy_stark/wsgi.py" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,17 +52,7 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/luffy_stark/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="20" column="15" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -110,9 +106,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="490" />
-    <option name="y" value="147" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="683" />
+    <option name="y" value="99" />
     <option name="width" value="1294" />
     <option name="height" value="925" />
   </component>
@@ -154,33 +150,19 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="luffy_stark" type="b2602c69:ProjectViewProjectNode" />
-              <item name="django_stark" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="luffy_stark" type="b2602c69:ProjectViewProjectNode" />
-              <item name="django_stark" type="462c0819:PsiDirectoryNode" />
-              <item name="luffy_stark" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/django_stark/settings.py" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="options.lastSelected" value="File.Encoding" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -213,7 +195,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.luffy_stark">
+  <component name="RunManager" selected="Django server.Unnamed">
     <configuration default="true" type="DjangoTestsConfigurationType">
       <module name="django_stark" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -370,17 +352,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="luffy_stark" type="Python.DjangoServer" factoryName="Django server">
-      <module name="django_stark" />
+    <configuration name="Unnamed" type="Python.DjangoServer" factoryName="Django server" nameIsGenerated="true">
+      <module name="luffy_stark" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="DJANGO_SETTINGS_MODULE" value="luffy_stark.settings" />
+        <env name="DJANGO_SETTINGS_MODULE" value="django_stark.settings" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="C:\Python37-32\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
@@ -454,7 +436,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django server.luffy_stark" />
+      <item itemvalue="Django server.Unnamed" />
       <item itemvalue="Python.1.面向对象" />
       <item itemvalue="Python.2.面向对象继承" />
       <item itemvalue="Python.3.判断是否是函数" />
@@ -480,20 +462,21 @@
       <option name="presentableId" value="Default" />
       <updated>1542803235191</updated>
       <workItem from="1565675259046" duration="3342000" />
+      <workItem from="1565678628089" duration="827000" />
+      <workItem from="1565679463455" duration="268000" />
+      <workItem from="1565679732051" duration="142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4801000" />
+    <option name="totallyTimeSpent" value="6038000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="525" y="77" width="1294" height="925" extended-state="0" />
-    <editor active="true" />
+    <frame x="835" y="193" width="1294" height="925" extended-state="0" />
     <layout>
-      <window_info active="true" id="Project" order="0" visible="true" weight="0.20259319" />
+      <window_info active="true" id="Project" order="0" visible="true" weight="0.21231766" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294271" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3963494" />
@@ -507,6 +490,7 @@
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="manage.py@luffy_stark" order="12" weight="0.32838285" />
+      <window_info anchor="bottom" id="Database Changes" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -618,13 +602,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/luffy_stark/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="112" column="13" selection-start-line="112" selection-start-column="13" selection-end-line="112" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/luffy_stark/settings.py" />
     <entry file="file://$PROJECT_DIR$/stark/templates/stark/change.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-586">
@@ -681,18 +659,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/luffy_stark/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-81" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/luffy_stark/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="20" column="15" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/luffy_stark/wsgi.py" />
+    <entry file="file://$PROJECT_DIR$/luffy_stark/urls.py" />
   </component>
   <component name="masterDetails">
     <states>
