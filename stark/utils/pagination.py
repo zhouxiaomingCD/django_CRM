@@ -76,10 +76,13 @@ class Pagination(object):
         page_list = []
 
         if self.current_page <= 1:
-            prev = '<li><a href="#">上一页</a></li>'
+            prev = '<li class="footable-page-arrow disabled"><a data-page="first" href="javascript:volid(0);">«</a></li>' \
+                   '<li class="footable-page-arrow disabled"><a data-page="prev" href="javascript:volid(0);">‹</a></li>'
         else:
             self.query_params['page'] = self.current_page - 1
-            prev = '<li><a href="%s?%s">上一页</a></li>' % (self.base_url, self.query_params.urlencode())
+            prev = '<li class="footable-page-arrow"><a data-page="first" href="%s?%s">«</a></li>' \
+                   '<li class="footable-page-arrow"><a data-page="prev" href="%s?%s">‹</a></li>' % (
+                   self.base_url, "page=1", self.base_url, self.query_params.urlencode())
         page_list.append(prev)
         for i in range(pager_start, pager_end + 1):
             self.query_params['page'] = i
@@ -91,10 +94,13 @@ class Pagination(object):
             page_list.append(tpl)
 
         if self.current_page >= self.pager_count:
-            nex = '<li><a href="#">下一页</a></li>'
+            nex = '<li class="footable-page-arrow disabled"><a data-page="first" href="javascript:volid(0);">›</a></li>' \
+                  '<li class="footable-page-arrow disabled"><a data-page="prev" href="javascript:volid(0);">»</a></li>'
         else:
             self.query_params['page'] = self.current_page + 1
-            nex = '<li><a href="%s?%s">下一页</a></li>' % (self.base_url, self.query_params.urlencode(),)
+            nex = '<li class="footable-page-arrow"><a data-page="first" href="%s?%s">›</a></li>' \
+                  '<li class="footable-page-arrow"><a data-page="prev" href="%s?page=%s">»</a></li>' % (
+                  self.base_url, self.query_params.urlencode(), self.base_url, self.all_count)
         page_list.append(nex)
         page_str = "".join(page_list)
         return page_str
