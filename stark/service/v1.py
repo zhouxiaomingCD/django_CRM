@@ -71,7 +71,7 @@ class StarkHandler(object):
 
     def get_add_btn(self):
         if self.has_add_btn:
-            return "<a class='btn btn-primary' href='%s'>添加</a>" % self.reverse_add_url()
+            return "<a class='btn btn-info' href='%s'>添加</a>" % self.reverse_add_url()
         return None
 
     model_form_class = None

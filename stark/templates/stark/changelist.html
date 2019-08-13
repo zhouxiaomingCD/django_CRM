@@ -30,7 +30,9 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-
+                        {% if add_btn %}
+                            {{ add_btn|safe }}
+                        {% endif %}
                             <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
             <thead>
             <tr>
