@@ -34,9 +34,9 @@ class UserInfoHandler(StarkHandler):
                     'age', 'email', 'depart',
                     StarkHandler.display_edit,
                     StarkHandler.display_del]
-
+    search_list = ["name__contains", "age__contains"]
     per_page_count = 10
-
+    order_list = ["-id"]
     has_add_btn = True
 
     model_form_class = UserInfoModelForm

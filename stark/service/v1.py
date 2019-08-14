@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django.shortcuts import HttpResponse, render, redirect
 from django.http import QueryDict
 from django import forms
+from django.db.models import Q
 
 from stark.utils.pagination import Pagination
 
@@ -71,7 +72,7 @@ class StarkHandler(object):
 
     def get_add_btn(self):
         if self.has_add_btn:
-            return "<a class='btn btn-info' href='%s'>添加</a>" % self.reverse_add_url()
+            return "<a class='btn btn-primary' href='%s'>添加</a>" % self.reverse_add_url()
         return None
 
     model_form_class = None
@@ -87,6 +88,16 @@ class StarkHandler(object):
 
         return DynamicModelForm
 
+    order_list = []
+
+    def get_order_list(self):
+        return self.order_list or ['-id', ]
+
+    search_list = []
+
+    def get_search_list(self):
+        return self.search_list
+
     def __init__(self, site, model_class, prev):
         self.site = site
         self.model_class = model_class
@@ -99,8 +110,21 @@ class StarkHandler(object):
         :param request:
         :return:
         """
-        # ########## 1. 处理分页 ##########
-        all_count = self.model_class.objects.all().count()
+
+        search_list = self.get_search_list()
+        search_value = request.GET.get('q', '')
+        conn = Q()
+        conn.connector = 'OR'
+        if search_value:
+            for item in search_list:
+                conn.children.append((item, search_value))
+
+        # ########## 1. 获取排序 ##########
+        order_list = self.get_order_list()
+        queryset = self.model_class.objects.filter(conn).order_by(*order_list)
+
+        # ########## 2. 处理分页 ##########
+        all_count = queryset.count()
 
         query_params = request.GET.copy()
         query_params._mutable = True
@@ -113,11 +137,11 @@ class StarkHandler(object):
             per_page=self.per_page_count,
         )
 
-        data_list = self.model_class.objects.all()[pager.start:pager.end]
+        data_list = queryset[pager.start:pager.end]
 
-        # ########## 2. 处理表格 ##########
+        # ########## 3. 处理表格 ##########
         list_display = self.get_list_display()
-        # 2.1 处理表格的表头
+        # 3.1 处理表格的表头
         header_list = []
         if list_display:
             for key_or_func in list_display:
@@ -129,7 +153,7 @@ class StarkHandler(object):
         else:
             header_list.append(self.model_class._meta.model_name)
 
-        # 2.2 处理表的内容
+        # 3.2 处理表的内容
 
         body_list = []
         for row in data_list:
@@ -144,7 +168,7 @@ class StarkHandler(object):
                 tr_list.append(row)
             body_list.append(tr_list)
 
-        # ##########3. 添加按钮 #########
+        # ##########4. 添加按钮 #########
         add_btn = self.get_add_btn()
 
         return render(
@@ -155,7 +179,9 @@ class StarkHandler(object):
                 'header_list': header_list,
                 'body_list': body_list,
                 'pager': pager,
-                'add_btn': add_btn
+                'add_btn': add_btn,
+                'search_list': search_list,
+                'search_value': search_value
             }
         )
 

@@ -2,71 +2,85 @@
 {% block content %}
 
 
-<body class="gray-bg">
+    <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>FooTable行切换，排序，分页演示</h5>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>FooTable行切换，排序，分页演示</h5>
 
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#">选项 01</a>
-                                    </li>
-                                    <li><a href="#">选项 02</a>
-                                    </li>
-                                </ul>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">选项 01</a>
+                                </li>
+                                <li><a href="#">选项 02</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
                         </div>
-                        <div class="ibox-content">
+                    </div>
+                    <div class="ibox-content">
+                    <div class="row">
                         {% if add_btn %}
+                            <div class="col-sm-1">
                             {{ add_btn|safe }}
+                            </div>
                         {% endif %}
-                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
-            <thead>
-            <tr>
-                {% for item in header_list %}
-                    <th>{{ item }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for row in body_list %}
-                <tr>
-                    {% for ele in row %}
-                        <td>{{ ele }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-                                <tfoot>
+                        {% if search_list %}
+                            <div class="col-sm-3 pull-right">
+                                <form method="GET" class="form-inline">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词"  name="q" class="input-sm form-control" value="{{ search_value }}"> <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
+                            <thead>
+                            <tr>
+                                {% for item in header_list %}
+                                    <th>{{ item }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in body_list %}
                                 <tr>
-                                    <td colspan="8">
-                                        <ul class="pagination pull-right">
-                                                {{ pager.page_html |safe }}
-                                        </ul>
-                                    </td>
+                                    {% for ele in row %}
+                                        <td>{{ ele }}</td>
+                                    {% endfor %}
                                 </tr>
-                                </tfoot>
-                            </table>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <ul class="pagination pull-right">
+                                        {{ pager.page_html |safe }}
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
 
-                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
+    </div>
     <!-- 全局js -->
     <script src="/static/stark/js/jquery.min.js?v=2.1.4"></script>
     <script src="/static/stark/js/bootstrap.min.js?v=3.3.6"></script>
@@ -75,7 +89,7 @@
     <!-- 自定义js -->
     <script src="/static/stark/js/content.js?v=1.0.0"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             $('.footable').footable();
             $('.footable2').footable();
@@ -85,8 +99,6 @@
     </script>
 
 
-
-
-</body>
+    </body>
 
 {% endblock %}
