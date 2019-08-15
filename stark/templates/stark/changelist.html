@@ -11,42 +11,45 @@
                     <div class="ibox-title">
                         <h5>FooTable行切换，排序，分页演示</h5>
 
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">选项 01</a>
-                                </li>
-                                <li><a href="#">选项 02</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
                     </div>
+                    {% if search_list %}
+                            <div class="col-sm-2 pull-right">
+                                <form method="GET">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词"  name="q" class="input-sm form-control" value="{{ search_value }}">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"> 搜索</button> </span>
+                                </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                   <form method="POST">
+                   {% csrf_token %}
                     <div class="ibox-content">
                     <div class="row">
+                    {% if action_dict %}
+                    <div class="col-sm-2">
+                                <div class="input-group">
+                                    <select class="form-control m-b" name="action">
+                                        {% for action_fun,action_name in action_dict.items %}
+                                        <option>---请选择操作---</option>
+                                        <option value="{{ action_fun }}">{{ action_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"> 执行操作</button>
+                                    </span>
+                                      </div>
+                    </div>
+                    {% endif %}
                         {% if add_btn %}
                             <div class="col-sm-1">
                             {{ add_btn|safe }}
                             </div>
                         {% endif %}
-                        {% if search_list %}
-                            <div class="col-sm-3 pull-right">
-                                <form method="GET" class="form-inline">
-                                <div class="input-group">
-                                    <input type="text" placeholder="请输入关键词"  name="q" class="input-sm form-control" value="{{ search_value }}"> <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-sm btn-primary"> 搜索</button> </span>
-                                </div>
-                                </form>
-                            </div>
-                        {% endif %}
+
                     </div>
+
                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
                             <thead>
                             <tr>
@@ -76,6 +79,7 @@
                         </table>
 
                     </div>
+                   </form>
                 </div>
             </div>
         </div>
