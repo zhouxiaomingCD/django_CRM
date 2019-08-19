@@ -9,8 +9,9 @@ from django.shortcuts import HttpResponse, render, redirect
 from django.http import QueryDict
 from django import forms
 from django.db.models import Q
-
+from django.db.models import ForeignKey, ManyToManyField
 from stark.utils.pagination import Pagination
+from django.db.models import ForeignKey, ManyToManyField
 
 
 def get_choice_text(title, field):
@@ -28,6 +29,127 @@ def get_choice_text(title, field):
         return getattr(obj, method)()
 
     return inner
+
+
+class SearchGroupRow(object):
+    def __init__(self, title, queryset_or_tuple, option, query_dict):
+        """
+
+        :param title: 组合搜索的列名称
+        :param queryset_or_tuple: 组合搜索关联获取到的数据
+        :param option: 配置
+        :param query_dict: request.GET
+        """
+        self.title = title
+        self.queryset_or_tuple = queryset_or_tuple
+        self.option = option
+        self.query_dict = query_dict
+
+    def __iter__(self):
+        yield '<div class="whole">'
+        yield self.title
+        yield '</div>'
+        yield '<div class="others">'
+        total_query_dict = self.query_dict.copy()
+        total_query_dict._mutable = True
+
+        origin_value_list = self.query_dict.getlist(self.option.field)
+        if not origin_value_list:
+            yield "<a class='active' href='?%s'>全部</a>" % total_query_dict.urlencode()
+        else:
+            total_query_dict.pop(self.option.field)
+            yield "<a href='?%s'>全部</a>" % total_query_dict.urlencode()
+
+        for item in self.queryset_or_tuple:
+            text = self.option.get_text(item)
+            value = str(self.option.get_value(item))
+            query_dict = self.query_dict.copy()
+            query_dict._mutable = True
+
+            if not self.option.is_multi:
+                query_dict[self.option.field] = value
+                if value in origin_value_list:
+                    query_dict.pop(self.option.field)
+                    yield "<a class='active' href='?%s'>%s</a>" % (query_dict.urlencode(), text)
+                else:
+                    yield "<a href='?%s'>%s</a>" % (query_dict.urlencode(), text)
+            else:
+                # {'gender':['1','2']}
+                multi_value_list = query_dict.getlist(self.option.field)
+                if value in multi_value_list:
+                    multi_value_list.remove(value)
+                    query_dict.setlist(self.option.field, multi_value_list)
+                    yield "<a class='active' href='?%s'>%s</a>" % (query_dict.urlencode(), text)
+                else:
+                    multi_value_list.append(value)
+                    query_dict.setlist(self.option.field, multi_value_list)
+                    yield "<a href='?%s'>%s</a>" % (query_dict.urlencode(), text)
+
+        yield '</div>'
+
+
+class Option(object):
+    def __init__(self, field, is_multi=False, db_condition=None, text_func=None, value_func=None):
+        """
+        :param field: 组合搜索关联的字段
+        :param is_multi: 是否支持多选
+        :param db_condition: 数据库关联查询时的条件
+        :param text_func: 此函数用于显示组合搜索按钮页面文本
+        :param value_func: 此函数用于显示组合搜索按钮值
+        """
+        self.field = field
+        self.is_multi = is_multi
+        if not db_condition:
+            db_condition = {}
+        self.db_condition = db_condition
+        self.text_func = text_func
+        self.value_func = value_func
+
+        self.is_choice = False
+
+    def get_db_condition(self, request, *args, **kwargs):
+        return self.db_condition
+
+    def get_queryset_or_tuple(self, model_class, request, *args, **kwargs):
+        """
+        根据字段去获取数据库关联的数据
+        :return:
+        """
+        # 根据gender或depart字符串，去自己对应的Model类中找到 字段对象
+        field_object = model_class._meta.get_field(self.field)
+        title = field_object.verbose_name
+        # 获取关联数据
+        if isinstance(field_object, ForeignKey) or isinstance(field_object, ManyToManyField):
+            # FK和M2M,应该去获取其关联表中的数据： QuerySet
+            db_condition = self.get_db_condition(request, *args, **kwargs)
+            return SearchGroupRow(title, field_object.related_model.objects.filter(**db_condition), self, request.GET)
+        else:
+            # 获取choice中的数据：元组
+            self.is_choice = True
+            return SearchGroupRow(title, field_object.choices, self, request.GET)
+
+    def get_text(self, field_object):
+        """
+        获取文本函数
+        :param field_object:
+        :return:
+        """
+        if self.text_func:
+            return self.text_func(field_object)
+
+        if self.is_choice:
+            return field_object[1]
+
+        return str(field_object)
+
+    def get_value(self, field_object):
+        if self.value_func:
+            return self.value_func(field_object)
+
+        if self.is_choice:
+            return field_object[0]
+
+        return field_object.pk
 
 
 class StarkModelForm(forms.ModelForm):
@@ -123,6 +245,32 @@ class StarkHandler(object):
 
     action_multi_delete.text = "批量删除"
 
+    search_group = []
+
+    def get_search_group(self):
+        return self.search_group
+
+    def get_search_group_condition(self, request):
+        """
+        获取组合搜索的条件
+        :param request:
+        :return:
+        """
+        condition = {}
+        # ?depart=1&gender=2&page=123&q=999
+        for option in self.get_search_group():
+            if option.is_multi:
+                values_list = request.GET.getlist(option.field)  # tags=[1,2]
+                if not values_list:
+                    continue
+                condition['%s__in' % option.field] = values_list
+            else:
+                value = request.GET.get(option.field)  # tags=[1,2]
+                if not value:
+                    continue
+                condition[option.field] = value
+        return condition
+
     def __init__(self, site, model_class, prev):
         self.site = site
         self.model_class = model_class
@@ -138,7 +286,7 @@ class StarkHandler(object):
         # ########## 1. 处理Action ##########
         action_list = self.get_action_list()
         action_dict = {func.__name__: func.text for func in action_list}  # {'multi_delete':'批量删除','multi_init':'批量初始化'}
-        print(action_dict)
+
         if request.method == 'POST':
             action_func_name = request.POST.get('action')
             if action_func_name and action_func_name in action_dict:
@@ -157,7 +305,9 @@ class StarkHandler(object):
 
         # ########## 3. 获取排序 ##########
         order_list = self.get_order_list()
-        queryset = self.model_class.objects.filter(conn).order_by(*order_list)
+        # 获取组合的条件
+        search_group_condition = self.get_search_group_condition(request)
+        queryset = self.model_class.objects.filter(conn).filter(**search_group_condition).order_by(*order_list)
 
         # ########## 4. 处理分页 ##########
         all_count = queryset.count()
@@ -204,8 +354,15 @@ class StarkHandler(object):
                 tr_list.append(row)
             body_list.append(tr_list)
 
-        # ##########6. 添加按钮 #########
+        # ########## 6. 添加按钮 #########
         add_btn = self.get_add_btn()
+
+        # ########## 7. 组合搜索 #########
+        search_group_row_list = []
+        search_group = self.get_search_group()  # ['gender', 'depart']
+        for option_object in search_group:
+            row = option_object.get_queryset_or_tuple(self.model_class, request, *args, **kwargs)
+            search_group_row_list.append(row)
 
         return render(
             request,
@@ -218,7 +375,8 @@ class StarkHandler(object):
                 'add_btn': add_btn,
                 'search_list': search_list,
                 'search_value': search_value,
-                'action_dict': action_dict
+                'action_dict': action_dict,
+                'search_group_row_list': search_group_row_list
             }
         )
 

@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.shortcuts import HttpResponse, redirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from stark.service.v1 import site, StarkHandler, get_choice_text, StarkModelForm
+from stark.service.v1 import site, StarkHandler, get_choice_text, StarkModelForm, Option
 from django import forms
 from app01 import models
 
@@ -28,6 +28,11 @@ class UserInfoModelForm(StarkModelForm):
         fields = ['name', 'gender', 'classes', 'age', 'email']
 
 
+class MyOption(Option):
+    def get_db_condition(self, request, *args, **kwargs):
+        return {}
+
+
 class UserInfoHandler(StarkHandler):
     # 定制页面显示的列
     list_display = [StarkHandler.display_checkbox,
@@ -40,7 +45,7 @@ class UserInfoHandler(StarkHandler):
 
     per_page_count = 10
     has_add_btn = True
-    model_form_class = UserInfoModelForm
+    # model_form_class = UserInfoModelForm
 
     order_list = ['id']
 
@@ -48,9 +53,16 @@ class UserInfoHandler(StarkHandler):
 
     action_list = [StarkHandler.action_multi_delete, ]
 
-    def save(self, form, is_update=False):
-        form.instance.depart_id = 1
-        form.save()
+    # def save(self, form, is_update=False):
+    #     form.instance.depart_id = 1
+    #     form.save()
+
+    search_group = [
+        Option('gender', is_multi=True),
+        Option('depart', db_condition={'id__gt': 0})
+        # MyOption('depart', {'id__gt': 2}),
+        # Option('gender', text_func=lambda field_object: field_object[1] + '666'),
+    ]
 
 
 site.register(models.UserInfo, UserInfoHandler)

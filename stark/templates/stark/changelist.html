@@ -1,6 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %}
+    {% block css %}
+        <style>
+        .ibox-body{
+            position: relative;
+        }
+        .fuzzy-search{
+            position: absolute;
+            top: 190px;
+            right: 0;
 
+        }
+        </style>
+        {% endblock %}
 
     <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,8 +24,86 @@
                         <h5>FooTable行切换，排序，分页演示</h5>
 
                     </div>
-                    {% if search_list %}
-                            <div class="col-sm-2 pull-right">
+
+                    <div class="ibox-body" >
+                      {% if search_group_row_list %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-filter" aria-hidden="true"></i> 快速筛选
+                                </div>
+                                <div class="panel-body">
+                                    <div class="search-group">
+                                        {% for row in search_group_row_list %}
+                                            <div class="row">
+                                                {% for obj in row %}
+                                                    {{ obj|safe }}
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                      {% endif %}
+                       <form method="POST">
+
+                       {% csrf_token %}
+                        <div class="ibox-content">
+                        <div class="row">
+                        {% if action_dict %}
+                        <div class="col-sm-2">
+                                    <div class="input-group">
+                                        <select class="form-control m-b" name="action">
+                                            {% for action_fun,action_name in action_dict.items %}
+                                            <option>---请选择操作---</option>
+                                            <option value="{{ action_fun }}">{{ action_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary"> 执行操作</button>
+                                        </span>
+                                          </div>
+                        </div>
+                        {% endif %}
+                            {% if add_btn %}
+                                <div class="col-sm-1">
+                                {{ add_btn|safe }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
+                                <thead>
+                                <tr>
+                                    {% for item in header_list %}
+                                        <th>{{ item }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in body_list %}
+                                    <tr>
+                                        {% for ele in row %}
+                                            <td>{{ ele }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <ul class="pagination pull-right">
+                                            {{ pager.page_html |safe }}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                       </form>
+                       {% if search_list %}
+                            <span class="col-sm-2 fuzzy-search pull-right">
                                 <form method="GET">
                                 <div class="input-group">
                                     <input type="text" placeholder="请输入关键词"  name="q" class="input-sm form-control" value="{{ search_value }}">
@@ -21,88 +111,16 @@
                                         <button type="submit" class="btn btn-primary"> 搜索</button> </span>
                                 </div>
                                 </form>
-                            </div>
+
+                               </span>
                         {% endif %}
-                   <form method="POST">
-                   {% csrf_token %}
-                    <div class="ibox-content">
-                    <div class="row">
-                    {% if action_dict %}
-                    <div class="col-sm-2">
-                                <div class="input-group">
-                                    <select class="form-control m-b" name="action">
-                                        {% for action_fun,action_name in action_dict.items %}
-                                        <option>---请选择操作---</option>
-                                        <option value="{{ action_fun }}">{{ action_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-primary"> 执行操作</button>
-                                    </span>
-                                      </div>
-                    </div>
-                    {% endif %}
-                        {% if add_btn %}
-                            <div class="col-sm-1">
-                            {{ add_btn|safe }}
-                            </div>
-                        {% endif %}
-
                     </div>
 
-                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
-                            <thead>
-                            <tr>
-                                {% for item in header_list %}
-                                    <th>{{ item }}</th>
-                                {% endfor %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for row in body_list %}
-                                <tr>
-                                    {% for ele in row %}
-                                        <td>{{ ele }}</td>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td colspan="8">
-                                    <ul class="pagination pull-right">
-                                        {{ pager.page_html |safe }}
-                                    </ul>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-
-                    </div>
-                   </form>
                 </div>
             </div>
         </div>
 
     </div>
-    <!-- 全局js -->
-    <script src="/static/stark/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/static/stark/js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="/static/stark/js/plugins/footable/footable.all.min.js"></script>
-
-    <!-- 自定义js -->
-    <script src="/static/stark/js/content.js?v=1.0.0"></script>
-    <script>
-        $(document).ready(function () {
-
-            $('.footable').footable();
-            $('.footable2').footable();
-
-        });
-
-    </script>
-
-
     </body>
 
 {% endblock %}
