@@ -1,0 +1,117 @@
+{% extends 'layout.html' %}
+
+{% block css %}
+    <style>
+    .add-btn a{
+    margin-left:245px;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+{#    <div class="luffy-container">#}
+{##}
+{#        {% if add_btn %}#}
+{#            <div style="margin: 5px 0;">#}
+{#                {{ add_btn|safe }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {% for row in body_list %}#}
+{#            <div class="panel panel-default">#}
+{#                <div class="panel-body" style="position: relative;">#}
+{#                    {{ row.0 }}#}
+{#                    <div style="margin-top: 5px;">#}
+{#                        <div style="display: inline-block;margin-right: 15px;">#}
+{#                            <i class="fa fa-user-o" aria-hidden="true"></i>#}
+{#                            {{ row.1 }}#}
+{#                        </div>#}
+{#                        <div style="display: inline-block;">#}
+{#                            <i class="fa fa-clock-o" aria-hidden="true"></i>#}
+{#                            {{ row.2 }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div style="position:absolute;top:0;bottom:0;right:0;width:100px;display: flex;justify-content:center;align-items:center;">#}
+{#                        <div style="display: inline-block;"> {{ row.3 }} </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#        <nav>#}
+{#            <ul class="pagination">#}
+{#                {{ pager.page_html|safe }}#}
+{#            </ul>#}
+{#        </nav>#}
+{#    </div>#}
+    <body class="gray-bg">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrapper wrapper-content">
+                <div class="row animated fadeInRight">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="text-center float-e-margins p-md">
+                                <span>预览：</span>
+                                <a href="#" class="btn btn-xs btn-primary" id="lightVersion">浅色</a>
+                                <a href="#" class="btn btn-xs btn-primary" id="darkVersion">深色</a>
+                            </div>
+                            <div class="ibox-content" id="ibox-content">
+                                                      {% if add_btn %}
+                                                                <div class="add-btn" style="margin: 5px 0;">
+                                                                    {{ add_btn|safe }}
+                                                                </div>
+                                                            {% endif %}
+                                <div id="vertical-timeline" class="vertical-container dark-timeline">
+
+                                        {% for row in body_list %}
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon blue-bg">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>{{ row.1 }}</h2>
+                                            <p><b style="font-size: 17px">第{{ forloop.revcounter }}次跟进： </b>{{ row.0 }}</p>
+                                            <div href="#" class="btn btn-sm btn-default">{{ row.3 }} </div>
+                                            <span class="vertical-date">
+                                         <br>
+                                        <small>{{ row.2|date:'Y-m-d' }}</small>
+                                    </span>
+                                        </div>
+                                    </div>
+                                        {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+
+            // Local script for demo purpose only
+            $('#lightVersion').click(function (event) {
+                event.preventDefault();
+                $('#ibox-content').removeClass('ibox-content');
+                $('#vertical-timeline').removeClass('dark-timeline');
+                $('#vertical-timeline').addClass('light-timeline');
+            });
+
+            $('#darkVersion').click(function (event) {
+                event.preventDefault();
+                $('#ibox-content').addClass('ibox-content');
+                $('#vertical-timeline').removeClass('light-timeline');
+                $('#vertical-timeline').addClass('dark-timeline');
+            });
+
+        });
+    </script>
+{% endblock %}

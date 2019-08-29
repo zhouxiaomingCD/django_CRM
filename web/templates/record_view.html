@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+{% block css %}
+    <style>
+        .ibox{
+            height: 100vh;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrapper wrapper-content">
+                <div class="row animated fadeInRight">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="text-center float-e-margins p-md">
+                                <span>预览：</span>
+                                <a href="#" class="btn btn-xs btn-primary" id="lightVersion">浅色</a>
+                                <a href="#" class="btn btn-xs btn-primary" id="darkVersion">深色</a>
+                            </div>
+                            <div class="" id="ibox-content">
+
+                                <div id="vertical-timeline" class="vertical-container light-timeline">
+                                        {% for row in record_list %}
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon blue-bg">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>{{ row.consultant.name }}</h2>
+                                            <p><b style="font-size: 17px">第{{ forloop.revcounter }}次跟进： </b>{{ row.note }}</p>
+{#                                            <a href="#" class="btn btn-sm btn-success"> 下载文档 </a>#}
+                                            <span class="vertical-date">
+                                         <br>
+                                        <small>{{ row.date|date:'Y-m-d' }}</small>
+                                    </span>
+                                        </div>
+                                    </div>
+                                        {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+
+            // Local script for demo purpose only
+            $('#lightVersion').click(function (event) {
+                event.preventDefault()
+                $('#ibox-content').removeClass('ibox-content');
+                $('#vertical-timeline').removeClass('dark-timeline');
+                $('#vertical-timeline').addClass('light-timeline');
+            });
+
+            $('#darkVersion').click(function (event) {
+                event.preventDefault()
+                $('#ibox-content').addClass('ibox-content');
+                $('#vertical-timeline').removeClass('light-timeline');
+                $('#vertical-timeline').addClass('dark-timeline');
+            });
+
+        });
+    </script>
+{% endblock %}

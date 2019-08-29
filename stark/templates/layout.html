@@ -1,3 +1,4 @@
+{% load rbac %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +22,8 @@
     <link href="/static/stark/css/font-awesome.min.css" rel="stylesheet">
 {#    <link href="/static/stark/css/animate.css" rel="stylesheet">#}
     <link href="/static/stark/css/style.css" rel="stylesheet">
+    <link href="/static/stark/plugins/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="/static/stark/css/style.css" rel="stylesheet">
     {% block css %}
 
     {% endblock %}
@@ -28,6 +31,7 @@
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
+
         <!--左侧导航开始-->
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="nav-close"><i class="fa fa-times-circle"></i>
@@ -67,12 +71,13 @@
                         <a href="#"><i class="fa fa-table"></i> <span class="nav-label">表格</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
 
-                            <li><a class="J_menuItem" href="stark/changelist.html">Foo Tables</a>
+                            <li><a class="J_menuItem" href="/index/">Foo Tables</a>
                             </li>
 
                         </ul>
-                    </li>
 
+                    </li>
+                    {% multi_menu request %}
 
                 </ul>
             </div>
@@ -189,7 +194,23 @@
 
     <!-- 第三方插件 -->
     <script src="/static/stark/js/plugins/pace/pace.min.js"></script>
+    <script src="/static/stark/plugins/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="/static/stark/plugins/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script>
+    $('.form_date').datetimepicker({
+        minView: "month",
+        language: "zh-CN",
+        sideBySide: true,
+        format: 'yyyy-mm-dd',
+        bootcssVer: 3,
+        startDate: new Date(),
+        autoclose: true,
+        pickerPosition: "bottom-left"
+    });
+</script>
+    {% block js %}
 
+    {% endblock %}
 </body>
 
 </html>

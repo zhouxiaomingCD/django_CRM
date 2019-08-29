@@ -1,0 +1,26 @@
+{#<div class="multi-menu">#}
+{#    {% for item in menu_dict.values %}#}
+{#        <div class="item">#}
+{#            <div class="title"><span class="icon-wrap"><i class="fa {{ item.icon }}"></i></span> {{ item.title }}</div>#}
+{#            <div class="body {{ item.class }}">#}
+{#                {% for per in item.children %}#}
+{#                    <a class="{{ per.class }}" href="{{ per.url }}">{{ per.title }}</a>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    {% endfor %}#}
+{#</div>#}
+
+
+    {% for item in menu_dict.values %}
+<li class="{{ item.class }}">
+    <a href="#"><i class="fa {{ item.icon }}"></i> <span class="nav-label">{{ item.title }}</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse {{ per.class }}" aria-expanded="{{ per.class }}" style="height: 0px;">
+        {% for per in item.children %}
+        <li><a class="J_menuItem" href="{{ per.url }}">{{ per.title }}</a>
+        {% endfor %}
+        </li>
+    </ul>
+</li>
+    {% endfor %}

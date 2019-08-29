@@ -2,12 +2,13 @@
 {% block content %}
     {% block css %}
         <style>
-        .ibox-body{
+        .ibox-content{
             position: relative;
+            border-style: none;
         }
         .fuzzy-search{
             position: absolute;
-            top: 190px;
+            top: 0px;
             right: 0;
 
         }
@@ -24,8 +25,6 @@
                         <h5>FooTable行切换，排序，分页演示</h5>
 
                     </div>
-
-                    <div class="ibox-body" >
                       {% if search_group_row_list %}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -44,6 +43,8 @@
                                 </div>
                             </div>
                       {% endif %}
+                    <div class="ibox-content" >
+
                        <form method="POST">
 
                        {% csrf_token %}
@@ -53,8 +54,9 @@
                         <div class="col-sm-2">
                                     <div class="input-group">
                                         <select class="form-control m-b" name="action">
-                                            {% for action_fun,action_name in action_dict.items %}
+
                                             <option>---请选择操作---</option>
+                                            {% for action_fun,action_name in action_dict.items %}
                                             <option value="{{ action_fun }}">{{ action_name }}</option>
                                             {% endfor %}
                                         </select>
